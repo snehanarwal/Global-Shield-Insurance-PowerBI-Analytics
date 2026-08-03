@@ -57,3 +57,18 @@ DIVIDE(
     COUNTROWS(Fact_claims),
     0
 )
+
+**## Calculated Columns (Row-Level Categorization)**
+
+// Days to Settle
+SettlementDays = DATEDIFF(Fact_claims[ClaimDate], Fact_claims[SettlementDate], DAY)
+
+// Speed Tier Classification
+SettlementSpeed = 
+IF(
+    ISBLANK(Fact_claims[SettlementDate]), 
+    "Pending Review",
+    IF(Fact_claims[SettlementDays] <= 10, "Fast Settlement (<=10 Days)", "Delayed Settlement (>10 Days)")
+)
+
+
